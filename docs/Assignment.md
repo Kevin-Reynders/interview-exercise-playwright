@@ -96,8 +96,8 @@ Duid hieronder aan wat je hebt afgerond:
 
 ### Structuur & Setup
 
-- [ ] Fork deze repository
-- [ ] Project opgezet en Playwright geïnstalleerd
+- [x] Fork deze repository
+- [x] Project opgezet en Playwright geïnstalleerd
 - [ ] Page Object Model toegepast
 - [ ] Helpers / utilities toegevoegd waar nodig
 - [ ] Duidelijke projectstructuur gebruikt
