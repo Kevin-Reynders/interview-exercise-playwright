@@ -1,0 +1,26 @@
+{
+  "name": "interview-exercise-playwright",
+  "version": "1.0.0",
+  "description": "Take-home assignment voor SDET kandidaten — automatisering van 4 scenario’s op bol.com met Playwright. Kandidaten forken deze repo, zetten Playwright vanaf nul op, en leveren hun oplossing in met code, CI/CD en documentatie.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kevin-Reynders/interview-exercise-playwright.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Kevin-Reynders/interview-exercise-playwright/issues"
+  },
+  "homepage": "https://github.com/Kevin-Reynders/interview-exercise-playwright#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^26.3.0"
+  }
+}
