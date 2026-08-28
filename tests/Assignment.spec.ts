@@ -148,7 +148,7 @@ test.describe('Paginering', () => {
         await homePage.acceptLanguage();
     });
 
-    test('FirstFiveTitles', async ({ page }) => {
+    test('Check the first five titles of page 1 and 2 with eachother', async ({ page }) => {
         await page.goto("https://www.bol.com/be/nl/");
         await homePage.searchForItem("lego");
         searchPage = new SearchPage(page);
@@ -156,7 +156,10 @@ test.describe('Paginering', () => {
         const group1Titles = searchPage.getFirstFiveTitles(); //Promise with string array
         const titles1 = await group1Titles; //String array
         expect(titles1.length).toBe(5);
-
+        await test.info().attach(`${test.info().title} - Page 1`, {
+            body: await searchPage.page.screenshot({ fullPage: true }),
+            contentType: 'image/png',
+        });
 
 
 
@@ -180,6 +183,11 @@ test.describe('Paginering', () => {
         const group2Titles = searchPage.getFirstFiveTitles();
         const titles2 = await group2Titles;
         expect(titles2.length).toBe(5);
+
+        await test.info().attach(`${test.info().title} - Page 2`, {
+            body: await searchPage.page.screenshot({ fullPage: true }),
+            contentType: 'image/png',
+        });
 
         const allTitles = [...titles1, ...titles2]
 

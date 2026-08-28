@@ -30,6 +30,7 @@ export class SearchPage{
             await this.filterReleaseYearTitle.click(); // Click the filter dropdown
         }
         //await this.filterReleaseYearTitle.click(); // Click the filter dropdown
+        await expect(yearOptionLocator).toBeVisible();
         await yearOptionLocator.click();
         await expect(this.page).toHaveURL(new RegExp(`.*filter_N=${year}.*`)); // Verify the URL contains the selected year
         await expect(yearOptionLocator).toHaveAttribute('aria-checked','true');
@@ -42,12 +43,13 @@ export class SearchPage{
     }
 
     async sortBy(sortingOption: SortingOptions) {
-        const something = this.page.locator('//select[@label="Sortering"]').first();
+        const selectedSorting = this.page.locator('//select[@label="Sortering"]').first();
         //this.page.getByLabel('Sortering').filter({ has: this.page.locator('select')});
-        await something.selectOption(sortingOption);
-        await something.waitFor({ state: "visible" });
-        await expect(something).toHaveValue(sortingOption);
+        await selectedSorting.selectOption(sortingOption);
         await waitForPageLoad(this.page); // Wait for the page to load after sorting
+        await expect(selectedSorting).toBeVisible();
+        await selectedSorting.waitFor({ state: "visible" });
+        await expect(selectedSorting).toHaveValue(sortingOption);
     }
 
     async getThreePrices(): Promise<number[]> {
@@ -62,6 +64,7 @@ export class SearchPage{
     }
 
     async getFirstFiveTitles() {
+        await expect(this.productTitles.first()).toBeVisible();
         const allTitles = await this.productTitles.allTextContents();
         //const filteredTitles = await Promise.all(allTitles.slice(0, 5).map(title => title.trim()));
         const filteredTitles = allTitles.slice(2, 7); //First 2 results are always sponsered, so they will usually give back the same results, therefore excluding them
