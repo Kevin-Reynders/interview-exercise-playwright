@@ -11,3 +11,12 @@ export enum ReleaseYear {
 }
 //The only way to specifically filter our the years is by targetting their direct id
 
+export enum SortingOptions {
+    Relevance = "RELEVANCE",
+    Popularity = "POPULARITY",
+    PriceLowToHigh = "PRICE_ASC",
+    PriceHighToLow = "PRICE_DESC",
+    Releasedate = "RELEASE_DATE",
+    Rating = "RATING",
+    Wishlist = "WISHLIST",
+}

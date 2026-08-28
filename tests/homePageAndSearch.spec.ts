@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from '../pages/homePage';
 import { SearchPage } from '../pages/searchPage';
-import { ReleaseYear } from '../helpers/filters';
+import { ReleaseYear, SortingOptions } from '../helpers/filters';
 
 let homePage: HomePage;
 let searchPage: SearchPage;
@@ -51,8 +51,31 @@ test.describe('Filteren en sorteren', () => {
         await searchPage.filterByReleaseYear(ReleaseYear.Year2024);
         //Search for a specific category, e.g. "Gaming"
         await searchPage.filterByCategory("Gaming");
+        await expect(searchPage.productSearchHeader).toContainText("Gaming");
 
+        //Sort the results by price low to high
+        await searchPage.sortBy(SortingOptions.PriceLowToHigh);
+        //await expect(searchPage.page.getByLabel('Sortering')).toContainText(SortingOptions.PriceLowToHigh);
 
+        //Get the first three prices and check if they are sorted correctly
+        const prices = await searchPage.getThreePrices();
+        //Putting in a console log to see the prices
+        console.log("Prices: ", prices[0], prices[1], prices[2]);
+        expect(prices.length).toBe(3);
+        expect(prices[0]).toBeLessThanOrEqual(prices[1]);
+        expect(prices[1]).toBeLessThanOrEqual(prices[2]);
     });
+});
+
+test.describe('Productdetailpagina', () => {
+    test.beforeAll(async ({ page }) => {
+        homePage = new HomePage(page);
+        await homePage.goto();
+        await homePage.acceptCookies();
+        await homePage.acceptLanguage();
+    });
+
+    
+
 
 });
