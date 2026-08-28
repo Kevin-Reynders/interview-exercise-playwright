@@ -22,7 +22,6 @@ export class SearchPage{
         this.searchInput = page.locator('[data-test="search_input_trigger"]');
         this.searchButton = page.locator('[data-test="search-button"]');
         this.filterReleaseYearTitle = page.getByRole('button', { name: 'Jaar van uitgave' });
-
     }
 
     async filterByReleaseYear(year: ReleaseYear) {
@@ -61,13 +60,20 @@ export class SearchPage{
             return parseFloat(`${priceMatch![1]}.${priceMatch![2]}`);
         });
     }
+
+    async getFirstFiveTitles() {
+        const allTitles = await this.productTitles.allTextContents();
+        //const filteredTitles = await Promise.all(allTitles.slice(0, 5).map(title => title.trim()));
+        const filteredTitles = allTitles.slice(2, 7); //First 2 results are always sponsered, so they will usually give back the same results, therefore excluding them
+        console.log(filteredTitles);
+        return filteredTitles;
+    }
     
     //The producttitles and productprices do not have a proper test id, and these are the only locators I could find that give me a specific point to look from in the results
 
 
-
-
-    
-
-
+    async goToPageNumber(pageNumber: number) {
+        this.page.locator(`[aria-label="ga naar pagina  ${pageNumber}"]`).dblclick();
+        await expect(this.page.locator(`[aria-label="huidige pagina ${pageNumber}"]`)).toHaveAttribute('aria-current', 'page');
+    }
 }
