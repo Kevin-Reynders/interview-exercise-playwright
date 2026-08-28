@@ -98,28 +98,28 @@ Duid hieronder aan wat je hebt afgerond:
 
 - [x] Fork deze repository
 - [x] Project opgezet en Playwright geïnstalleerd
-- [ ] Page Object Model toegepast
-- [ ] Helpers / utilities toegevoegd waar nodig
-- [ ] Duidelijke projectstructuur gebruikt
+- [x] Page Object Model toegepast
+- [x] Helpers / utilities toegevoegd waar nodig
+- [x] Duidelijke projectstructuur gebruikt
 
 ### Scenario’s
 
-- [ ] Homepage & zoekfunctie geautomatiseerd
-- [ ] Filteren & sorteren geautomatiseerd
-- [ ] Productdetailpagina (PDP) geautomatiseerd
-- [ ] Paginering geautomatiseerd
+- [x] Homepage & zoekfunctie geautomatiseerd
+- [x] Filteren & sorteren geautomatiseerd
+- [x] Productdetailpagina (PDP) geautomatiseerd
+- [x] Paginering geautomatiseerd
 
 ### Best Practices
 
 - [ ] Robuuste selectors gebruikt
-- [ ] `expect` assertions toegepast
-- [ ] Screenshots toegevoegd
-- [ ] HTML-rapportage aanwezig
-- [ ] Stabiele tests (bv. geen `page.waitForTimeout(1_000)`)
+- [x] `expect` assertions toegepast
+- [x] Screenshots toegevoegd
+- [x] HTML-rapportage aanwezig
+- [x] Stabiele tests (bv. geen `page.waitForTimeout(1_000)`)
 
 ### Documentatie
 
-- [ ] README.md met installatie- en run-instructies
+- [x] README.md met installatie- en run-instructies
 - [ ] strategy.md met uitleg aanpak, risico’s & flaky test preventie
 
 ### CI/CD
