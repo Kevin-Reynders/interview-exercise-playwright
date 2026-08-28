@@ -111,7 +111,7 @@ Duid hieronder aan wat je hebt afgerond:
 
 ### Best Practices
 
-- [ ] Robuuste selectors gebruikt
+- [x] Robuuste selectors gebruikt
 - [x] `expect` assertions toegepast
 - [x] Screenshots toegevoegd
 - [x] HTML-rapportage aanwezig
@@ -120,16 +120,16 @@ Duid hieronder aan wat je hebt afgerond:
 ### Documentatie
 
 - [x] README.md met installatie- en run-instructies
-- [ ] strategy.md met uitleg aanpak, risico’s & flaky test preventie
+- [x] strategy.md met uitleg aanpak, risico’s & flaky test preventie
 
 ### CI/CD
 
-- [ ] Pipeline ingesteld (GitHub Actions / GitLab CI / Bitbucket Pipelines)
-- [ ] Tests draaien automatisch in CI
-- [ ] HTML-rapport en screenshots worden als artifact gepubliceerd
+- [x] Pipeline ingesteld (GitHub Actions / GitLab CI / Bitbucket Pipelines)
+- [x] Tests draaien automatisch in CI
+- [x] HTML-rapport en screenshots worden als artifact gepubliceerd
 
 ### Oplevering
 
-- [ ] Bezorg ons een link en toegang naar jouw repository 
-- [ ] Zorg dat docs/Strategy.md leesbaar is 
-- [ ] Indien je niet verder geraakt zorg dat docs/README.md de reden bevat onder een extra topic 'Additionele informatie'
+- [x] Bezorg ons een link en toegang naar jouw repository 
+- [x] Zorg dat docs/Strategy.md leesbaar is 
+- [x] Indien je niet verder geraakt zorg dat docs/README.md de reden bevat onder een extra topic 'Additionele informatie'
