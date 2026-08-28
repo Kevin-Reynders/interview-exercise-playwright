@@ -25,17 +25,15 @@ test.describe('Homepage en zoekfunctie', () => {
     test('Search for lego and check the results', async ({ page }) => {
         searchPage = new SearchPage(page);
         await homePage.searchForItem("lego");
+        await expect(homePage.searchInput).toBeVisible();
         await expect(searchPage.productSearchHeader).toContainText("lego");
         await expect(searchPage.page).toHaveURL(/.*searchtext=lego.*/);
-        //await expect(searchPage.productTitles.nth(0)).toBeVisible();
         await expect(searchPage.productTitles.nth(0)).not.toBeEmpty();
-        //await expect(searchPage.productPrices.nth(0)).toBeVisible();
         await expect(searchPage.productPrices.nth(0)).not.toBeEmpty();
         await test.info().attach(`${test.info().title}`, {
             body: await searchPage.page.screenshot({ fullPage: true }),
             contentType: 'image/png',
         }); //Making a screenshot for proof and adding it to report
-        //await searchPage.page.screenshot({ path: 'search_results.png', fullPage: true });
     });
 });
 
@@ -48,19 +46,15 @@ test.describe('Filteren en sorteren', () => {
     });
     
     test('Apply Year and Category filter and sort to search results', async () => {
-        await homePage.searchForItem("lego");
+        await homePage.searchForItem("lego"); //Search term is needed because if leaving it empty, it will refer to the homepage
         searchPage = new SearchPage(homePage.page);
-        // Apply filter and sort logic here
-        //e.g. only show results from 2024
+        //Only show results from 2024
         await searchPage.filterByReleaseYear(ReleaseYear.Year2024);
         //Search for a specific category, e.g. "Gaming"
         await searchPage.filterByCategory("Gaming");
         await expect(searchPage.productSearchHeader).toContainText("Gaming");
-
         //Sort the results by price low to high
         await searchPage.sortBy(SortingOptions.PriceLowToHigh);
-        //await expect(searchPage.page.getByLabel('Sortering')).toContainText(SortingOptions.PriceLowToHigh);
-
         //Get the first three prices and check if they are sorted correctly
         const prices = await searchPage.getThreePrices();
         //Putting in a console log to see the prices
@@ -68,6 +62,10 @@ test.describe('Filteren en sorteren', () => {
         expect(prices.length).toBe(3);
         expect(prices[0]).toBeLessThanOrEqual(prices[1]);
         expect(prices[1]).toBeLessThanOrEqual(prices[2]);
+        await test.info().attach(`${test.info().title} - Sorted page`, {
+            body: await searchPage.page.screenshot({ fullPage: true }),
+            contentType: 'image/png',
+        });
     });
 });
 
@@ -82,12 +80,6 @@ test.describe('Productdetailpagina', () => {
     test('Open a product detail page and check the title, price, availability and add it to the cart', async ({ context, page }) => {
         await homePage.searchForItem("lego");
         searchPage = new SearchPage(page);
-        //const [productPage] = await Promise.all([searchPage.productTitles.nth(0).click()]);
-        //await productPage.waitForLoadState('load');
-        //await expect(productPage.productTitle).toBeVisible();
-
-
-        //await searchPage.clickFirstProduct();
         const pagePromise = context.waitForEvent('page'); // Wait for the new tab to open
         await Promise.all([
             searchPage.productTitles.nth(0).click({ modifiers: ['Control'] }), // Open in a new tab
@@ -99,17 +91,10 @@ test.describe('Productdetailpagina', () => {
 
         await waitForPageLoad(newPage); // Wait for the page to load after clicking the product
         productDetailsPage.page.bringToFront(); // Bring the new page to the front
-        await expect(productDetailsPage.productTitle.first()).toBeVisible();
-        //await expect(productDetailsPage.productPrice.first()).toBeVisible();
-        await expect(productDetailsPage.productAvailability.first()).toBeVisible();
-        await expect(productDetailsPage.addToCartButton.first()).toBeVisible();
-        //await productDetailsPage.addToCartButton.click();
-        //await expect(productDetailsPage.page.getByTestId('add-to-cart-button')).toHaveText('Toegevoegd aan winkelwagen');
-
-        //await page.route('**/cart/**', route => route.abort()); // Block the request to the cart page
-        //await page.route('**/basket/**', route => route.abort()); // Block the request to the basket page
-        //await page.route('**/order/**', route => route.abort()); // Block the request to the order page
-        //await page.route('**/checkout/**', route => route.abort()); // Block the request to the checkout page
+        await productDetailsPage.isProductTitleVisible();
+        await productDetailsPage.isProductPriceVisible();
+        await productDetailsPage.isProductAvailabilityVisible();
+        await productDetailsPage.isAddToCartButtonVisible();
 
         await productDetailsPage.page.route('**/*', async (route) => {
             if (route.request().method() === 'POST') {
@@ -124,20 +109,17 @@ test.describe('Productdetailpagina', () => {
             body: await productDetailsPage.page.screenshot({ fullPage: true }),
             contentType: 'image/png',
         });
-
+        const currentURL: string = productDetailsPage.page.url();
         productDetailsPage.addToCartButton.first().click();
         await expect(productDetailsPage.addToCartButton.first()).toHaveText('In winkelwagen');
-
+        //Check the URL if staying on the PDP
+        await expect(productDetailsPage.page).toHaveURL(currentURL)
+        
         await test.info().attach(`${test.info().title} - After cart`, {
             body: await productDetailsPage.page.screenshot({ fullPage: true }),
             contentType: 'image/png',
         });
-
     });
-
-    
-
-
 });
 
 test.describe('Paginering', () => {
@@ -161,40 +143,23 @@ test.describe('Paginering', () => {
             contentType: 'image/png',
         });
 
-
-
-        //const responsePromise = page.waitForResponse(response => {
-        //    return response.url().includes('&page=2') && response.request().method() === 'GET' && response.status() === 200;
-        //});
+        //Everything page 2 and onwards
         searchPage.goToPageNumber(2);
-
         await searchPage.page.waitForURL(new RegExp(`.*page=2.*`));
         await expect(searchPage.page).toHaveURL(new RegExp(`.*page=2.*`));
         await expect(searchPage.page.locator(`[aria-label="huidige pagina 2"]`)).toHaveAttribute('aria-current', 'page');
-        //https://www.bol.com/be/nl/s/_.data?searchtext=lego&page=3
-
-        //const responsePromise = searchPage.page.waitForResponse(response => response.url().includes(`page=2`) && response.ok());
-        
-        //await responsePromise;
         await waitForPageLoad(searchPage.page);
-
-
-
         const group2Titles = searchPage.getFirstFiveTitles();
         const titles2 = await group2Titles;
         expect(titles2.length).toBe(5);
-
         await test.info().attach(`${test.info().title} - Page 2`, {
             body: await searchPage.page.screenshot({ fullPage: true }),
             contentType: 'image/png',
         });
 
+        //Checks if the titles are unique or not
         const allTitles = [...titles1, ...titles2]
-
         const duplicates = allTitles.filter((title, index) => allTitles.indexOf(title) !== index);
-        //const duplicates = titles2.filter(title => titles1.includes(title));
         expect(duplicates).toEqual([]);
-
-
     });
 });

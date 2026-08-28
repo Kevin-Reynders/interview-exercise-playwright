@@ -10,7 +10,7 @@ export class HomePage {
     //There are multiple ways to solve the locator in a page issue, whereas I chose for centralizing the locators within the constructor
     constructor(page: Page){
         this.page = page;
-        //Change locator below since it relies on site being in Dutch //*[@id="radix-_R_pl35_"]/div[3]/button[1] 
+        //As site is forced in Dutch, these locators are ok, but if there was a proper test-id that can be used instead, I would have
         this.cookiesButton = page.getByRole("button", {name: "Alles accepteren"});
         this.searchInput = page.locator('[data-test="search_input_trigger"]');
         this.searchButton = page.locator('[data-test="search-button"]');

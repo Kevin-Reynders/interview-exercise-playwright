@@ -13,12 +13,9 @@ export class SearchPage{
 
     constructor(page: Page){
         this.page = page;
-        this.productSearchHeader = page.locator('//*[@id="mainContent"]/div[1]/div[1]/h1');
+        this.productSearchHeader = page.getByRole('heading', { level: 1});
         this.productTitles = page.locator('//*[@class="order-4"]');
-        //this.productPrices = page.locator('//div[@class="flex items-center justify-between"]');
-        //this.productPrices = page.locator('span:has-text("De prijs van dit product is")');
         this.productPrices = page.locator('//span[contains(text(), "De prijs van dit product is")]');
-        //this.productPrices = page.locator('span', { hasText: 'De prijs van dit product is' });
         this.searchInput = page.locator('[data-test="search_input_trigger"]');
         this.searchButton = page.locator('[data-test="search-button"]');
         this.filterReleaseYearTitle = page.getByRole('button', { name: 'Jaar van uitgave' });
@@ -29,7 +26,6 @@ export class SearchPage{
         if (await this.filterReleaseYearTitle.getAttribute('data-state') === 'closed') {
             await this.filterReleaseYearTitle.click(); // Click the filter dropdown
         }
-        //await this.filterReleaseYearTitle.click(); // Click the filter dropdown
         await expect(yearOptionLocator).toBeVisible();
         await yearOptionLocator.click();
         await expect(this.page).toHaveURL(new RegExp(`.*filter_N=${year}.*`)); // Verify the URL contains the selected year
@@ -44,7 +40,6 @@ export class SearchPage{
 
     async sortBy(sortingOption: SortingOptions) {
         const selectedSorting = this.page.locator('//select[@label="Sortering"]').first();
-        //this.page.getByLabel('Sortering').filter({ has: this.page.locator('select')});
         await selectedSorting.selectOption(sortingOption);
         await waitForPageLoad(this.page); // Wait for the page to load after sorting
         await expect(selectedSorting).toBeVisible();
@@ -56,7 +51,7 @@ export class SearchPage{
         await this.productPrices.first().waitFor({ state: "attached" });
 
         const allPrices = await this.productPrices.allTextContents();
-        const filteredPrices = allPrices.filter((_, i) => i % 2 === 0); // Filter out every second element, as prices come in pairs for the different views
+        const filteredPrices = allPrices.filter((_, i) => i % 2 === 0); // Filter out every second element, as prices come in pairs for the different views (list and grid)
         return filteredPrices.slice(0, 3).map(text => { 
             const priceMatch = text.match(/De prijs van dit product is '(\d+)' euro en '(\d+)' cent/); 
             return parseFloat(`${priceMatch![1]}.${priceMatch![2]}`);
@@ -66,15 +61,11 @@ export class SearchPage{
     async getFirstFiveTitles() {
         await expect(this.productTitles.first()).toBeVisible();
         const allTitles = await this.productTitles.allTextContents();
-        //const filteredTitles = await Promise.all(allTitles.slice(0, 5).map(title => title.trim()));
         const filteredTitles = allTitles.slice(2, 7); //First 2 results are always sponsered, so they will usually give back the same results, therefore excluding them
         console.log(filteredTitles);
         return filteredTitles;
     }
     
-    //The producttitles and productprices do not have a proper test id, and these are the only locators I could find that give me a specific point to look from in the results
-
-
     async goToPageNumber(pageNumber: number) {
         this.page.locator(`[aria-label="ga naar pagina  ${pageNumber}"]`).click();
         await expect(this.page).toHaveURL(new RegExp(`.*page=${pageNumber}.*`));
