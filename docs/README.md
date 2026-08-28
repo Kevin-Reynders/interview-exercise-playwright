@@ -45,3 +45,13 @@ npx playwright test --ui
 Executing the program in a specific browser while seeing what the program is doing by opening the browsers visually
 ```
 npx playwright test --project chromium --headed 
+```
+
+Open the last HTML report run
+```
+npx playwright show-report 
+```
+
+## Additionele informatie
+Het instllen van de pipeline is geen probleem, maar de pipeline loopt al direct vast op de beforeEach van elke test. Hierdoor is het probleem dat er praktisch niks uitgevoerd werd.
+Lokaal werkt deze rapportering wel, met opgemaakt report, maar via de pipeline is dit een probleem.
