@@ -157,10 +157,26 @@ test.describe('Paginering', () => {
         const titles1 = await group1Titles; //String array
         expect(titles1.length).toBe(5);
 
+
+
+
+        //const responsePromise = page.waitForResponse(response => {
+        //    return response.url().includes('&page=2') && response.request().method() === 'GET' && response.status() === 200;
+        //});
         searchPage.goToPageNumber(2);
-        await waitForPageLoad(searchPage.page);
-        await searchPage.page.waitForURL(new RegExp(`.*page=2.*`))
+
+        await searchPage.page.waitForURL(new RegExp(`.*page=2.*`));
         await expect(searchPage.page).toHaveURL(new RegExp(`.*page=2.*`));
+        await expect(searchPage.page.locator(`[aria-label="huidige pagina 2"]`)).toHaveAttribute('aria-current', 'page');
+        //https://www.bol.com/be/nl/s/_.data?searchtext=lego&page=3
+
+        //const responsePromise = searchPage.page.waitForResponse(response => response.url().includes(`page=2`) && response.ok());
+        
+        //await responsePromise;
+        await waitForPageLoad(searchPage.page);
+
+
+
         const group2Titles = searchPage.getFirstFiveTitles();
         const titles2 = await group2Titles;
         expect(titles2.length).toBe(5);

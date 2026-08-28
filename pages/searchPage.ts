@@ -32,7 +32,7 @@ export class SearchPage{
         //await this.filterReleaseYearTitle.click(); // Click the filter dropdown
         await yearOptionLocator.click();
         await expect(this.page).toHaveURL(new RegExp(`.*filter_N=${year}.*`)); // Verify the URL contains the selected year
-        await yearOptionLocator.setChecked(true);
+        await expect(yearOptionLocator).toHaveAttribute('aria-checked','true');
     }
 
     async filterByCategory(category: string) {
@@ -73,7 +73,7 @@ export class SearchPage{
 
 
     async goToPageNumber(pageNumber: number) {
-        this.page.locator(`[aria-label="ga naar pagina  ${pageNumber}"]`).dblclick();
-        await expect(this.page.locator(`[aria-label="huidige pagina ${pageNumber}"]`)).toHaveAttribute('aria-current', 'page');
+        this.page.locator(`[aria-label="ga naar pagina  ${pageNumber}"]`).click();
+        await expect(this.page).toHaveURL(new RegExp(`.*page=${pageNumber}.*`));
     }
 }
