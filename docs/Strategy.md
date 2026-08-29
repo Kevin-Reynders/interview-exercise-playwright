@@ -5,6 +5,8 @@ Om te beginnen is de volledige opdracht doorgenomen. Op basis daarvan heb ik tes
 
 Nu, uiteindelijk had ik verschillende testfiles gemaakt, maar heb ik alles in 1 testfile gestopt omdat alles praktisch rond dezelfde pagina's wordt gedaan.
 
+Mijn schatting van hoe lang het zou duren had ik eerder gemaakt op basis van de homepage, waar data-testid's beschikbaar waren, maar blijkbaar werden er op andere pagina's bijna nooit gebruikt gemaakt van deze soort id's, wat het maken van fatsoenlijke locators voor elementen een stuk moeilijker maakte.
+
 De beslissingen die hier uitgelegd worden zijn genomen op basis van de opdracht.
 
 ## Scenario 1: Homepage en zoekfunctie
